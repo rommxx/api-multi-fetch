@@ -1,0 +1,19 @@
+{
+  "name": "api-multi-fetch",
+  "version": "1.0.0",
+  "description": "API Multi Fetcher",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rommxx/api-multi-fetch.git"
+  },
+  "author": "rommxx",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rommxx/api-multi-fetch/issues"
+  },
+  "homepage": "https://github.com/rommxx/api-multi-fetch#readme"
+}
