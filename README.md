@@ -1,4 +1,7 @@
 # api-multi-fetch
+
+[![Build Status](https://travis-ci.org/rommxx/api-multi-fetch.svg?branch=master)](https://travis-ci.org/rommxx/api-multi-fetch)
+
 API Multi Fetcher express middleware
 
 ## Installation
