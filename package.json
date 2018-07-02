@@ -4,7 +4,7 @@
   "description": "API Multi Fetcher",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "cross-env NODE_ENV=development mocha"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,13 @@
   "bugs": {
     "url": "https://github.com/rommxx/api-multi-fetch/issues"
   },
-  "homepage": "https://github.com/rommxx/api-multi-fetch#readme"
+  "homepage": "https://github.com/rommxx/api-multi-fetch#readme",
+  "devDependencies": {
+    "chai": "4.1.2",
+    "chai-http": "4.0.0",
+    "cross-env": "5.2.0",
+    "express": "4.16.3",
+    "mocha": "5.2.0"
+  },
+  "dependencies": {}
 }
