@@ -6,7 +6,7 @@ const http = require('http');
  * @param req
  * @param res
  * @param next
- * @returns {Promise}
+ * @return {Object}
  */
 async function apiMultiFetcher(req, res, next) {
     const { query:queryParams, headers } = req;
