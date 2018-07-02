@@ -121,12 +121,6 @@ describe('API multi fetcher middleware', () => {
             chai.request(testApp)
                 .get(url)
                 .end((err, res) => {
-
-                    console.log("res!!!", Promise.resolve());
-
-                    // console.log("--------res body------", res);
-                    // console.log("--------------");
-
                     expect(res).to.be.a('object');
                     expect(res).to.have.property('status').to.equal(200);
                     expect(res.body.users).to.deep.equal(usersResponse);
