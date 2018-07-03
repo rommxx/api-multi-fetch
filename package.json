@@ -4,7 +4,7 @@
   "description": "API Multi Fetcher",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=development mocha"
+    "test": "cross-env NODE_ENV=development mocha --timeout 10000"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
     "chai": "4.1.2",
     "chai-http": "4.0.0",
     "cross-env": "5.2.0",
+    "dummy-json": "2.0.0",
     "express": "4.16.3",
     "mocha": "5.2.0"
   },
