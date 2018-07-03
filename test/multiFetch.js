@@ -86,7 +86,7 @@ describe('API multi fetcher middleware', () => {
     });
 
     context('GET single API call with non-existent customer', () => {
-        it('should fetch all customers', (done) => {
+        it('should receive an empty array', (done) => {
             const url = '/api/customers/1000000000001111';
             chai.request(testApp)
                 .get(url)
