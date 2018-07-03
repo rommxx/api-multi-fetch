@@ -21,7 +21,7 @@ testApp.get('/api/users/:userId', (req, res) => {
     const selectedUser = fixtures.users[userId];
 
     res.set('Content-Type', 'application/json');
-    res.send(selectedUser);
+    res.send(selectedUser || []);
 });
 
 testApp.get('/api/customers', (req, res) => {
@@ -34,7 +34,7 @@ testApp.get('/api/customers/:customerId', (req, res) => {
     const selectedCustomer = fixtures.customers[customerId];
 
     res.set('Content-Type', 'application/json');
-    res.send(selectedCustomer);
+    res.send(selectedCustomer || []);
 });
 
 testApp.get('/api/countries', (req, res) => {
@@ -49,7 +49,7 @@ describe('API multi fetcher middleware', () => {
             chai.request(testApp)
                 .get(url)
                 .end((err, res) => {
-                    expect(res).to.be.a('object');
+                    expect(res).to.be.an('object');
                     expect(res).to.have.property('status').to.equal(200);
                     expect(res.body).to.deep.equal(fixtures.users);
                     expect(err).to.equal(null);
@@ -62,7 +62,7 @@ describe('API multi fetcher middleware', () => {
             chai.request(testApp)
                 .get(url)
                 .end((err, res) => {
-                    expect(res).to.be.a('object');
+                    expect(res).to.be.an('object');
                     expect(res).to.have.property('status').to.equal(200);
                     expect(res.body).to.have.property('id').to.equal(5);
                     expect(res.body).to.have.property('name');
@@ -76,9 +76,24 @@ describe('API multi fetcher middleware', () => {
             chai.request(testApp)
                 .get(url)
                 .end((err, res) => {
-                    expect(res).to.be.a('object');
+                    expect(res).to.be.an('object');
                     expect(res).to.have.property('status').to.equal(200);
                     expect(res.body).to.deep.equal(fixtures.customers);
+                    expect(err).to.equal(null);
+                    done();
+                })
+        });
+    });
+
+    context('GET single API call with non-existent customer', () => {
+        it('should fetch all customers', (done) => {
+            const url = '/api/customers/1000000000001111';
+            chai.request(testApp)
+                .get(url)
+                .end((err, res) => {
+                    expect(res).to.be.an('object');
+                    expect(res).to.have.property('status').to.equal(200);
+                    expect(res.body).to.be.an('array').that.is.empty;
                     expect(err).to.equal(null);
                     done();
                 })
@@ -91,7 +106,7 @@ describe('API multi fetcher middleware', () => {
             chai.request(testApp)
                 .get(url)
                 .end((err, res) => {
-                    expect(res).to.be.a('object');
+                    expect(res).to.be.an('object');
                     expect(res).to.have.property('status').to.equal(200);
                     expect(res.body.users).to.deep.equal(fixtures.users);
                     expect(res.body.countries).to.deep.equal(fixtures.countries);
