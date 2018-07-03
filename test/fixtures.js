@@ -1,8 +1,8 @@
-var dummyjson = require('dummy-json');
+const dummyjson = require('dummy-json');
 
 const usersTemplate = `
 [
-    {{#repeat 10}}
+    {{#repeat 50}}
     {
       "id": {{@index}},
       "name": "{{firstName}}"
@@ -13,7 +13,7 @@ const usersTemplate = `
 
 const customersTemplate = `
 [
-    {{#repeat 10}}
+    {{#repeat 50}}
     {
       "id": {{@index}},
       "name": "{{firstName}}"
@@ -24,10 +24,10 @@ const customersTemplate = `
 
 const countriesTemplate = `
 [
-    {{#repeat 10}}
+    {{#repeat 50}}
     {
       "id": {{@index}},
-      "name": "{{firstName}}"
+      "name": "{{country}}"
     }
     {{/repeat}}
 ]

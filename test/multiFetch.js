@@ -4,52 +4,21 @@ const chai = require('chai');
 const expect = chai.expect;
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
+const fixtures = require('./fixtures');
 
 const testApp = express();
 const url = '/api/resources';
 
 testApp.get(url, apiMultiFetcher);
 
-const usersResponse = {
-    status: 'ok',
-    data: [
-        {id: 1, name: 'User1'},
-        {id: 2, name: 'User2'},
-        {id: 3, name: 'User3'},
-        {id: 4, name: 'User4'},
-        {id: 5, name: 'User5'}
-    ]
-};
-
-const customersResponse = {
-    status: 'ok',
-    data: [
-        {id: 1, name: 'Customer1'},
-        {id: 2, name: 'Customer2'},
-        {id: 3, name: 'Customer3'},
-        {id: 4, name: 'Customer4'},
-        {id: 23, name: 'Customer23'}
-    ]
-};
-
-const coutriesResponse = {
-    status: 'ok',
-    data: [
-        {id: 1, name: 'Country1'},
-        {id: 2, name: 'Country1'},
-        {id: 3, name: 'Country1'},
-        {id: 10, name: 'Country1'},
-    ]
-};
-
 testApp.get('/api/users', (req, res) => {
     res.set('Content-Type', 'application/json');
-    res.send(usersResponse);
+    res.send(fixtures.users);
 });
 
 testApp.get('/api/users/:userId', (req, res) => {
     const userId = parseInt(req.params.userId);
-    const selectedUser = usersResponse.data.find(user => user.id === userId);
+    const selectedUser = fixtures.users[userId];
 
     res.set('Content-Type', 'application/json');
     res.send(selectedUser);
@@ -57,12 +26,12 @@ testApp.get('/api/users/:userId', (req, res) => {
 
 testApp.get('/api/customers', (req, res) => {
     res.set('Content-Type', 'application/json');
-    res.send(customersResponse);
+    res.send(fixtures.customers);
 });
 
 testApp.get('/api/customers/:customerId', (req, res) => {
     const customerId = parseInt(req.params.customerId);
-    const selectedCustomer = customersResponse.data.find(customer => customer.id === customerId);
+    const selectedCustomer = fixtures.customers[customerId];
 
     res.set('Content-Type', 'application/json');
     res.send(selectedCustomer);
@@ -70,11 +39,11 @@ testApp.get('/api/customers/:customerId', (req, res) => {
 
 testApp.get('/api/countries', (req, res) => {
     res.set('Content-Type', 'application/json');
-    res.send(coutriesResponse);
+    res.send(fixtures.countries);
 });
 
 describe('API multi fetcher middleware', () => {
-    context('by single API call', () => {
+    context('GET single API call', () => {
         it('should fetch all users', (done) => {
             const url = '/api/users';
             chai.request(testApp)
@@ -82,7 +51,7 @@ describe('API multi fetcher middleware', () => {
                 .end((err, res) => {
                     expect(res).to.be.a('object');
                     expect(res).to.have.property('status').to.equal(200);
-                    expect(res.body).to.deep.equal(usersResponse);
+                    expect(res.body).to.deep.equal(fixtures.users);
                     expect(err).to.equal(null);
                     done();
                 })
@@ -95,7 +64,8 @@ describe('API multi fetcher middleware', () => {
                 .end((err, res) => {
                     expect(res).to.be.a('object');
                     expect(res).to.have.property('status').to.equal(200);
-                    expect(res.body).to.deep.equal({id: 5, name: 'User5'});
+                    expect(res.body).to.have.property('id').to.equal(5);
+                    expect(res.body).to.have.property('name');
                     expect(err).to.equal(null);
                     done();
                 })
@@ -108,14 +78,14 @@ describe('API multi fetcher middleware', () => {
                 .end((err, res) => {
                     expect(res).to.be.a('object');
                     expect(res).to.have.property('status').to.equal(200);
-                    expect(res.body).to.deep.equal(customersResponse);
+                    expect(res.body).to.deep.equal(fixtures.customers);
                     expect(err).to.equal(null);
                     done();
                 })
         });
     });
 
-    context('by multiple API call', () => {
+    context('GET multiple API call', () => {
         it('should fetch multiple resources in one go', (done) => {
             const url = '/api/resources?users=api/users&customer=api/customers/23&countries=api/countries';
             chai.request(testApp)
@@ -123,9 +93,10 @@ describe('API multi fetcher middleware', () => {
                 .end((err, res) => {
                     expect(res).to.be.a('object');
                     expect(res).to.have.property('status').to.equal(200);
-                    expect(res.body.users).to.deep.equal(usersResponse);
-                    expect(res.body.countries).to.deep.equal(coutriesResponse);
-                    expect(res.body.customer).to.deep.equal({id: 23, name: 'Customer23'});
+                    expect(res.body.users).to.deep.equal(fixtures.users);
+                    expect(res.body.countries).to.deep.equal(fixtures.countries);
+                    expect(res.body.customer).to.have.property('id').to.equal(23);
+                    expect(res.body.customer).to.have.property('name');
                     expect(err).to.equal(null);
                     done();
                 })
